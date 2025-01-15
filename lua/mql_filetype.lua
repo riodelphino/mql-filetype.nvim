@@ -2,10 +2,10 @@ local M = {}
 
 local loaded = false
 
--- local fn = require('mql_ft.functions')
-local opt = require('mql_ft.options')
-local aucmd = require('mql_ft.autocmd')
-local core = require('mql_ft.core')
+-- local fn = require('mql_filetype.functions')
+local opt = require('mql_filetype.options')
+local aucmd = require('mql_filetype.autocmd')
+local core = require('mql_filetype.core')
 
 function M.setup(user_opts)
    if loaded then return end

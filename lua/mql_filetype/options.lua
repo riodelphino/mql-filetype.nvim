@@ -14,7 +14,7 @@ function M.merge_user_opts(user_opts)
 end
 
 function M.deep_merge(default, merge)
-   fn = require('mql_ft.functions')
+   fn = require('mql_filetype.functions')
 
    if type(merge) ~= 'table' then return default end
 

@@ -1,6 +1,6 @@
 local M = {}
 
-local core = require('mql_ft.core')
+local core = require('mql_filetype.core')
 
 function M.create_autocmd()
    -- ファイルを開いた時や保存した時に filetype を自動的に設定する
