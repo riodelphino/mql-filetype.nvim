@@ -1,6 +1,6 @@
-# plugin-template.nvim
+# mt-ft.nvim
 
-![img/plugin_template.jpg](img/plugin_template.jpg)
+![img/mql_ft.jpg](img/mql_ft.jpg)
 
 
 ## Concept
@@ -40,14 +40,14 @@ Using [Lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 -- Minimum config:
 return {
-   'riodelphino/plugin_template.nvim',
+   'riodelphino/mql_ft.nvim',
    dependencies = {
       'nvim-lua/plenary.nvim',
    },
    lazy = true,
    ft = {},
    cmds = {
-      { 'PluginTemplateCommand1' },
+      { 'MQLFtCommand1' },
    },
    opts = {
       option_1 = '',
@@ -56,7 +56,7 @@ return {
       },
    },
    keys = {
-      { '<F1>', '<cmd>PluginTemplateCommand1<cr>' },
+      { '<F1>', '<cmd>MQLFtCommand1<cr>' },
    },
 }
 ```
@@ -79,7 +79,7 @@ opts = {
 Description for commmand:
 ```vim
 " Command1
-:PluginTemplateCommand1
+:MQLFtCommand1
 ```
 
 ## Lua functions
@@ -87,7 +87,7 @@ Description for commmand:
 Below lua functions are also available.
 ```lua
 -- Execute command1
-require('plugin_template').command1()
+require('mql_ft').command1()
 ```
 
 ## Keymaps
@@ -95,7 +95,7 @@ require('plugin_template').command1()
 Sample keymaps:
 ```lua
 keys = {
-    { 'your_key_here', '<cmd>PluginTemplateCommand1<cr>' },
+    { 'your_key_here', '<cmd>MQLFtCommand1<cr>' },
 },
 ```
 
