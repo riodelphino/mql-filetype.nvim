@@ -5,7 +5,7 @@
 
 ## Concept
 
-A neovim plugin for something.
+A neovim plugin for modifying mql4/mql5 filetypes.
 
 
 ## Screenshots
@@ -17,20 +17,22 @@ Title for screenshot
 ## Features
 
 **Main features**
-- Do something usefull.
+- Modify filetypes ...
+   - *.mq4 --> c
+   - *.mq5 --> cpp
+   - *.mqh
+      - No signs              --> cpp (default)
+      - with '// mql4' on top --> c
+      - with '// mql5' on top --> cpp
 
 **Not implmented**
-- Do something unusefull
+- Options
 
 
 ## Requirement
 
 **Mandatory**
 - nvim v0.10.2 (My environment. It seems to work in a little older versions.)
-- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) for async
-
-**Optional plugins**
-- [nvim-notify](https://github.com/rcarriga/nvim-notify) Cool style notify messages
 
 
 ## Installation
@@ -74,31 +76,6 @@ opts = {
 ```
 
 
-## Commands
-
-Description for commmand:
-```vim
-" Command1
-:MQLFtCommand1
-```
-
-## Lua functions
-
-Below lua functions are also available.
-```lua
--- Execute command1
-require('mql_ft').command1()
-```
-
-## Keymaps
-
-Sample keymaps:
-```lua
-keys = {
-    { 'your_key_here', '<cmd>MQLFtCommand1<cr>' },
-},
-```
-
 ## License
 
 [MIT License](./LICENSE)
@@ -106,5 +83,5 @@ keys = {
 
 ## TO-DO
 
-- [ ] Add something usefull.
+- [ ] Options to work
 

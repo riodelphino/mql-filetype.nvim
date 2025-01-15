@@ -1,10 +1,13 @@
 local M = {}
 
+local core = require('mql_ft.core')
+
 function M.create_autocmd()
-   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-      pattern = { '*.mqh' },
+   -- ファイルを開いた時や保存した時に filetype を自動的に設定する
+   vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
+      pattern = '*.mqh',
       callback = function()
-         M.core_operation()
+         core.set_mqh_filetype()
       end,
    })
 end
