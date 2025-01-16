@@ -3,14 +3,21 @@ local M = {}
 M.opts = {}
 
 M.default_opts = {
-   option_1 = '',
-   option_2 = {
-      sub_option_1 = '',
+   extension = {
+      mq4 = 'c',
+      mq5 = 'cpp',
+      mqh = 'c',
+   },
+   mqh = {
+      modifier = {
+         c = { '^// mql4$', '^// MQL4$' },
+         cpp = { '^// mql5$', '^// MQL5$' },
+      },
    },
 }
 
 function M.merge_user_opts(user_opts)
-   M.deep_merge(M.default_opts, user_opts)
+   M.opts = M.deep_merge(M.default_opts, user_opts)
 end
 
 function M.deep_merge(default, merge)
