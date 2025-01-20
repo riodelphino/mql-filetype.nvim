@@ -1,7 +1,6 @@
 # mql-filetype.nvim
 
-
-## Concepts
+![img/logo.jpg](img/logo.jpg)
 
 A neovim plugin for changing filetypes from MQL4/MQL5 to c/cpp.
 
