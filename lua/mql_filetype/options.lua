@@ -4,15 +4,24 @@ M.opts = {}
 
 M.default_opts = {
    extension = {
-      mq4 = 'c',
-      mq5 = 'cpp',
-      mqh = 'c',
-   },
-   mqh = {
-      modifier = {
-         c = { '^// mql4$', '^// MQL4$' },
-         cpp = { '^// mql5$', '^// MQL5$' },
-      },
+      mq4 = 'mql4',
+      mq5 = 'mql5',
+      mqh = function(path, bufnr)
+         local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ''
+         if first_line:match('^%s*//%s*mql5') then -- ex.) `// mql5`
+            return 'mql5', function(b)
+               vim.treesitter.start(b, 'cpp') -- Use `cpp` TS parser
+            end
+         elseif first_line:match('^%s*//%s*mql4') then -- ex.) `// mql4`
+            return 'mql4', function(b)
+               vim.treesitter.start(b, 'c') -- Use `c` TS parser
+            end
+         end
+         -- fallback
+         return 'mql5', function(b)
+            vim.treesitter.start(b, 'cpp')
+         end
+      end,
    },
 }
 

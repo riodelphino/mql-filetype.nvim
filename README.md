@@ -2,46 +2,32 @@
 
 ![img/logo.jpg](img/logo.jpg)
 
-A neovim plugin for changing filetypes from MQL4/MQL5 to c/cpp.
+A Neovim plugin that detects MQL4/MQL5 filetypes and attaches the appropriate C/C++ treesitter parser for highlighting.
 
 
 ## Backgrounds
 
-By default, MQL4/MQL5 have:
-   - No syntax highlights
-   - No linting support.  
-
-It's a tough road.
-
-If you change filetypes to c/cpp, you will get
+Issues:
+- `*.mq5` and `*.mq4` are lack of:
    - Syntax highlights
-   - Unperfect intellisence from clangd/ccls
-   - So many linting errors
+   - LSP diagnostics
+   - Completion
+   - Formatting
+- Also cannot determine filetype for `*.mqh`
 
-However, this is much better than the default.  
-(Linting errors should be omitted by lspconfig.)
+This plugin is trying to bridge and resolve them.
 
 
 ## Features
 
-**Main features**  
-   - Change filetype `*.mq4` to c.
-   - Change filetype `*.mq5` to cpp.
-   - Change `*.mqh` filetype to c/cpp depending on [the conditions](#conditions).
+- Set filetypes for `*.mq5`|`*.mq4`
+- Detect filetypes for `*.mqh`
+- Set treesitter highlight parsers
 
 
 ## Requirement
 
-- nvim v0.10.2 (Seems to work in older versions.)
-
-
-## Intellisence
-If you require intellisence support:
-   - Setup `clangd` or `ccls` in lspconfig
-   - Omit errors
-
-> [!Warning]
-> The code analyzing is not perfect, because of the differences between c/cpp and mql4/mql5.
+- nvim > v0.10.2
 
 
 ## Installation
@@ -63,41 +49,45 @@ return {
 ```lua
 opts = {
    extension = {
-      mq4 = 'c',
-      mq5 = 'cpp',
-      mqh = 'c',
-   },
-   mqh = {
-      modifier = {
-         c = { '^// mql4$', '^// MQL4$' },
-         cpp = { '^// mql5$', '^// MQL5$' },
-      },
+      mq4 = 'mql4',
+      mq5 = 'mql5',
+      mqh = function(path, bufnr)
+         local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ''
+         if first_line:match('^%s*//%s*mql5') then     -- ex.) `// mql5`
+            return 'mql5', function(b)
+               vim.treesitter.start(b, 'cpp')          -- Use `cpp` TS parser
+            end
+         elseif first_line:match('^%s*//%s*mql4') then -- ex.) `// mql4`
+            return 'mql4', function(b)
+               vim.treesitter.start(b, 'c')            -- Use `c` TS parser
+            end
+         end
+         -- fallback
+         return 'mql5', function(b)
+            vim.treesitter.start(b, 'cpp')
+         end
+      end,
    },
 }
 ```
+> [!Note]
+> `vim.filetype.add()` detectors can return a second value — a callback that only fires when the filetype is actually applied, not on every query.
 
 
-## Conditions
+With the above default options, filetype and treesitter parser are set as follows:
 
-With default options, filetype changings are processed by below conditions.
-
-*.mq4, *.mq5:
-| File pattern | Changed to |
-| ------------ | ---------- |
-| `*.mq4`      | c          |
-| `*.mq5`      | cpp        |
-
-*.mqh:
-| File pattern | First line             | Changed to |
-| ------------ | ---------------------- | ---------- |
-| `*.mqh`      | `// mql4` or `// MQL4` | c          |
-| `*.mqh`      | `// mql5` or `// MQL5` | cpp        |
-| `*.mqh`      | None of above          | c          |
+| Pattern | Condition                        | Filetype | TS Parser |
+| ------- | -------------------------------- | -------- | --------- |
+| `*.mq5` | -                                | mql5     | cpp       |
+| `*.mqh` | 1st line: `// mql5` or `// MQL5` | mql5     | cpp       |
+| `*.mq4` | -                                | mql4     | c         |
+| `*.mqh` | 1st line: `// mql4` or `// MQL4` | mql4     | c         |
+| `*.mqh` | 1st line: anything else          | mql5     | cpp       |
 
 This means:
-   - `*.mq4` is forced to be `c`.
-   - `*.mq5` is forced to be `cpp`.
-   - `*.mqh` is changed to `c` or `cpp`, depends on the first line.
+- `*.mq5` is always treated as `mql5`.
+- `*.mq4` is always treated as `mql4`.
+- `*.mqh` is treated as `mql5` or `mql4`, depending on its first line.
 
 
 ## License

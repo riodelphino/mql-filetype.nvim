@@ -1,2 +1,3 @@
 
-// ft = c
+// ft     : mql5
+// parser : cpp

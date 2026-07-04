@@ -1,2 +1,3 @@
 
-// ft = c
+// ft     : mql4
+// parser : c
