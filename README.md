@@ -54,19 +54,17 @@ opts = {
       mqh = function(path, bufnr)
          local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ''
          if first_line:match('^%s*//%s*mql5') then     -- ex.) `// mql5`
-            return 'mql5', function(b)
-               vim.treesitter.start(b, 'cpp')          -- Use `cpp` TS parser
-            end
+            return 'mql5'
          elseif first_line:match('^%s*//%s*mql4') then -- ex.) `// mql4`
-            return 'mql4', function(b)
-               vim.treesitter.start(b, 'c')            -- Use `c` TS parser
-            end
+            return 'mql4'
          end
          -- fallback
-         return 'mql5', function(b)
-            vim.treesitter.start(b, 'cpp')
-         end
+         return 'mql5'
       end,
+   },
+   parsers = {
+      mql5 = 'cpp',
+      mql4 = 'c',
    },
 }
 ```
